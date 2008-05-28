@@ -16,6 +16,6 @@ end
 Net::HTTP.start("static.wowhead.com") do |http|
 	zone_ids.each do |id|
 		res = http.get "/images/maps/enus/zoom/#{id}.jpg"
-		open("#{id}.jpg", "wb") {|f| f.write res.body} if res.is_a? Net::HTTPOK
+		open("Images/#{id}.jpg", "wb") {|f| f.write res.body} if res.is_a? Net::HTTPOK
 	end
 end
