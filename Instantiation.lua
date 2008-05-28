@@ -86,6 +86,7 @@ function Instantiation:OnShow()
 		local pin = self:GetPin()
 		pin:SetPoint("CENTER", self, "BOTTOMLEFT", tonumber(v[1])*w/100, (100-tonumber(v[2]))*h/100)
 		pin.tex:SetTexture(textures[v[4] or "default"])
+		pin.tiptext = v[3]
 		pin:Show()
 	end
 end
@@ -95,13 +96,24 @@ end
 --      Pin Factory      --
 ---------------------------
 
+local function HideTooltip() GameTooltip:Hide() end
+local function ShowTooltip(self)
+	if self.tiptext then
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+		GameTooltip:SetText(self.tiptext, nil, nil, nil, nil, true)
+	end
+end
+
 function Instantiation:GetPin()
 	for _,pin in pairs(pins) do
 		if not pin:IsShown() then return pin end
 	end
 
-	local pin = CreateFrame("Frame", nil, self)
+	local pin = CreateFrame("Button", nil, self)
 	pin:SetWidth(16) pin:SetHeight(16)
+	pin:SetScript("OnEnter", ShowTooltip)
+	pin:SetScript("OnLeave", HideTooltip)
+
 	pin.tex = pin:CreateTexture()
 	pin.tex:SetAllPoints()
 
