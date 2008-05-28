@@ -17,6 +17,7 @@ Net::HTTP.start("www.wowhead.com") do |http|
 		coords[id] = []
 		res = http.get "/?zone=#{id}"
 		res.body.scan(/\[([\d.]+),([\d.]+),\{label:'([^']*)',type:'([^']*)'\}\]/) {|m| coords[id] << m.join("_")}
+		res.body.scan(/\[([\d.]+),([\d.]+),\{label:'([^<']*)',url:'[^']+'\}\]/) {|m| coords[id] << m.join("_")}
 		res.body.scan(/\[([\d.]+),([\d.]+),\{label:'<b class="q">([^<]*)<\/b>/) {|m| coords[id] << m.join("_")}
 	end
 
