@@ -39,6 +39,8 @@ function Instantiation:ADDON_LOADED(event, addon)
 	InstantiationDB, InstantiationDBPC = setmetatable(InstantiationDB or {}, {__index = defaults}), setmetatable(InstantiationDBPC or {}, {__index = defaultsPC})
 	db, dbpc = InstantiationDB, InstantiationDBPC
 
+	UIPanelWindows["WorldMapFrame"] = {area = "center", pushable = 9} -- Not sure why this makes our tooltips work, but who cares?
+
 	self:SetAllPoints()
 	self.tex = self:CreateTexture(nil, "BACKGROUND")
 	self.tex:SetAllPoints()
