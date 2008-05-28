@@ -21,3 +21,4 @@ LibStub.lua
 tekKonfigAboutPanel.lua
 
 Instantiation.lua
+Coords.lua

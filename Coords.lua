@@ -46,3 +46,25 @@ local coords = [[
 3717:23.3_7.9_Entrance_3|48.7_24.4_Mennu the Betrayer|58.6_40.5_Rokmar the Crackler|80.9_84_Quagmirran
 1583:8.4_84.4_Entrance_3|15.4_55.9_To Section 2_1|31.3_12.4_Section 2_3|28.6_42.3_To Section 3_1|53.6_40.5_Section 3_3|78.8_38.2_To Section 4_1|72.6_69.1_Section 4_3|31.3_25_Pyroguard Emberseer|78.3_23.3_Warchief Rend Blackhand|79.5_23.3_Gyth|85.1_53.2_The Beast|47.1_73.5_General Drakkisath
 ]]
+
+
+local function helper(...)
+	local r = {}
+	for i=1,select("#", ...) do table.insert(r, {string.split("_", (select(i, ...)))}) end
+	return r
+end
+
+
+Instantiation.coords = setmetatable({}, {
+	__index = function(t, i)
+		local v = coords:match("\n".. i.. ":([^\n]*)\n")
+		if not v then
+			t[i] = false
+			return
+		end
+
+		v = helper(string.split("|", v))
+		t[i] = v
+		return v
+	end
+})
