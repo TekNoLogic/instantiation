@@ -5,6 +5,7 @@
 
 local L = setmetatable({}, {__index=function(t,i) return i end})
 local defaults, defaultsPC, db, dbpc = {}, {}
+local pins = {}
 
 
 ------------------------------
@@ -35,7 +36,10 @@ function Instantiation:ADDON_LOADED(event, addon)
 	self:SetAllPoints()
 	self.tex = self:CreateTexture(nil, "BACKGROUND")
 	self.tex:SetAllPoints()
-	self.tex:SetTexture("Interface\\AddOns\\Instantiation\\Images\\3456")
+
+	self.currentmap = 3456
+
+	self:SetScript("OnShow", self.OnShow)
 
 	LibStub("tekKonfig-AboutPanel").new("Instantiation", "Instantiation") -- Remove first arg if no parent config panel
 
@@ -61,6 +65,42 @@ function Instantiation:PLAYER_LOGOUT()
 	for i,v in pairs(defaultsPC) do if dbpc[i] == v then dbpc[i] = nil end end
 
 	-- Do anything you need to do as the player logs out
+end
+
+
+function Instantiation:OnShow()
+	if not self.currentmap then self:Hide() return end
+
+	self.tex:SetTexture("Interface\\AddOns\\Instantiation\\Images\\".. self.currentmap)
+
+	for _,pin in pairs(pins) do pin:Hide() end
+
+	local w, h = self:GetWidth(), self:GetHeight()
+	for i,v in pairs(self.coords[self.currentmap]) do
+		local pin = self:GetPin()
+		pin:SetPoint("CENTER", self, "BOTTOMLEFT", tonumber(v[1])*w/100, (100-tonumber(v[2]))*h/100)
+		pin:Show()
+	end
+end
+
+
+---------------------------
+--      Pin Factory      --
+---------------------------
+
+function Instantiation:GetPin()
+	for _,pin in pairs(pins) do
+		if not pin:IsShown() then return pin end
+	end
+
+	local pin = CreateFrame("Frame", nil, self)
+	pin:SetWidth(16) pin:SetHeight(16)
+	pin.tex = pin:CreateTexture()
+	pin.tex:SetAllPoints()
+	pin.tex:SetTexture("Interface\\WorldMap\\WorldMapPartyIcon")
+
+	table.insert(pins, pin)
+	return pin
 end
 
 
