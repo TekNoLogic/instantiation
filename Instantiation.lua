@@ -5,7 +5,13 @@
 
 local L = setmetatable({}, {__index=function(t,i) return i end})
 local defaults, defaultsPC, db, dbpc = {}, {}
-local pins = {}
+local IMAGEPATH = "Interface\\AddOns\\Instantiation\\Images\\"
+local pins, textures = {}, {
+	default = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_8", -- Bosses
+	["1"] = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_4", -- Stairs down, etc
+	["2"] = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_2", -- ST Statues
+	["3"] = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_6" --Entrances
+}
 
 
 ------------------------------
@@ -71,7 +77,7 @@ end
 function Instantiation:OnShow()
 	if not self.currentmap then self:Hide() return end
 
-	self.tex:SetTexture("Interface\\AddOns\\Instantiation\\Images\\".. self.currentmap)
+	self.tex:SetTexture(IMAGEPATH.. self.currentmap)
 
 	for _,pin in pairs(pins) do pin:Hide() end
 
@@ -79,6 +85,7 @@ function Instantiation:OnShow()
 	for i,v in pairs(self.coords[self.currentmap]) do
 		local pin = self:GetPin()
 		pin:SetPoint("CENTER", self, "BOTTOMLEFT", tonumber(v[1])*w/100, (100-tonumber(v[2]))*h/100)
+		pin.tex:SetTexture(textures[v[4] or "default"])
 		pin:Show()
 	end
 end
@@ -97,7 +104,6 @@ function Instantiation:GetPin()
 	pin:SetWidth(16) pin:SetHeight(16)
 	pin.tex = pin:CreateTexture()
 	pin.tex:SetAllPoints()
-	pin.tex:SetTexture("Interface\\WorldMap\\WorldMapPartyIcon")
 
 	table.insert(pins, pin)
 	return pin
