@@ -21,7 +21,7 @@ Net::HTTP.start("www.wowhead.com") do |http|
 		res.body.scan(/\[([\d.]+),([\d.]+),\{label:'<b class="q">([^<]*)<\/b>/) {|m| coords[id] << m.join("_")}
 	end
 
-	coords = [*coords].reject {|c| c[1].empty?}.map {|c| "#{c[0]}:#{c[1].join("|")}"}.join("\n")
+	coords = [*coords].reject {|c| c[1].empty?}.map {|c| "#{c[0]}:#{c[1].join("|")}"}.join("\n").gsub("\\'", "'")
 	open("Coords.lua", "wb") {|f| f << "local coords = [[\n" << coords << "\n]]\n"}
 end
 
