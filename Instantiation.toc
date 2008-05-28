@@ -1,0 +1,23 @@
+## Interface: 20400
+
+## Title: Instantiation
+## Notes: Instance maps and crap
+## Author: Tekkub Stoutwrithe
+## Version: Alpha
+## X-Website: http://www.tekkub.net/
+## X-Email: tekkub-wow@googlegroups.com
+## X-Category: Map
+
+## SavedVariables: InstantiationDB
+## SavedVariablesPerCharacter: InstantiationDBPC
+
+## OptionalDeps: tekDebug
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+## X-LoadOn-Slash: /instantiation
+
+LibStub.lua
+tekKonfigAboutPanel.lua
+
+Instantiation.lua
