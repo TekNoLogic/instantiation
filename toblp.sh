@@ -1,6 +1,6 @@
 #! /bin/bash
 
-for file in `ls *.png`
+for file in `ls Images/*.png`
 do
 	./BLPConverter.exe $file
 done
