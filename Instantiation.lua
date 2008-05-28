@@ -21,7 +21,7 @@ local function Debug(...) if debugf then debugf:AddMessage(string.join(", ", ...
 --      Event Handler      --
 -----------------------------
 
-Instantiation = CreateFrame("frame")
+Instantiation = CreateFrame("frame", nil, WorldMapDetailFrame)
 Instantiation:SetScript("OnEvent", function(self, event, ...) if self[event] then return self[event](self, event, ...) end end)
 Instantiation:RegisterEvent("ADDON_LOADED")
 
@@ -32,7 +32,10 @@ function Instantiation:ADDON_LOADED(event, addon)
 	InstantiationDB, InstantiationDBPC = setmetatable(InstantiationDB or {}, {__index = defaults}), setmetatable(InstantiationDBPC or {}, {__index = defaultsPC})
 	db, dbpc = InstantiationDB, InstantiationDBPC
 
-	-- Do anything you need to do after addon has loaded
+	self:SetAllPoints()
+	self.tex = self:CreateTexture(nil, "BACKGROUND")
+	self.tex:SetAllPoints()
+	self.tex:SetTexture("Interface\\AddOns\\Instantiation\\Images\\3456")
 
 	LibStub("tekKonfig-AboutPanel").new("Instantiation", "Instantiation") -- Remove first arg if no parent config panel
 
