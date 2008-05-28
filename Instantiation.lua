@@ -21,12 +21,12 @@ local function Debug(...) if debugf then debugf:AddMessage(string.join(", ", ...
 --      Event Handler      --
 -----------------------------
 
-local f = CreateFrame("frame")
-f:SetScript("OnEvent", function(self, event, ...) if self[event] then return self[event](self, event, ...) end end)
-f:RegisterEvent("ADDON_LOADED")
+Instantiation = CreateFrame("frame")
+Instantiation:SetScript("OnEvent", function(self, event, ...) if self[event] then return self[event](self, event, ...) end end)
+Instantiation:RegisterEvent("ADDON_LOADED")
 
 
-function f:ADDON_LOADED(event, addon)
+function Instantiation:ADDON_LOADED(event, addon)
 	if addon ~= "Instantiation" then return end
 
 	InstantiationDB, InstantiationDBPC = setmetatable(InstantiationDB or {}, {__index = defaults}), setmetatable(InstantiationDBPC or {}, {__index = defaultsPC})
@@ -43,7 +43,7 @@ function f:ADDON_LOADED(event, addon)
 end
 
 
-function f:PLAYER_LOGIN()
+function Instantiation:PLAYER_LOGIN()
 	self:RegisterEvent("PLAYER_LOGOUT")
 
 	-- Do anything you need to do after the player has entered the world
@@ -53,7 +53,7 @@ function f:PLAYER_LOGIN()
 end
 
 
-function f:PLAYER_LOGOUT()
+function Instantiation:PLAYER_LOGOUT()
 	for i,v in pairs(defaults) do if db[i] == v then db[i] = nil end end
 	for i,v in pairs(defaultsPC) do if dbpc[i] == v then dbpc[i] = nil end end
 
